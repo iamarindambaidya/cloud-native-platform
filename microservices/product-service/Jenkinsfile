@@ -10,17 +10,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    dockerImage = docker.build("product-service-image")
-                }
+                sh 'docker build -t product-service-image ./microservices/product-service'
             }
         }
 
         stage('Run Container') {
             steps {
-                script {
-                    dockerImage.run('-p 8081:8081')
-                }
+                sh 'docker run -d -p 8081:8081 --name product-service-run product-service-image || true'
             }
         }
     }
